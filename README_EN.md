@@ -1,5 +1,10 @@
 # Chat2API Worker
 
+![CI](https://github.com/laninenterline/Chat2API-Worker/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
+
+中文 | [English](README_EN.md)
+
+
 A single **Cloudflare Worker** exposing **DeepSeek / GLM / MiniMax** web models through
 **OpenAI ChatCompletions**, **Anthropic Messages** and **OpenAI Responses** compatible APIs.
 

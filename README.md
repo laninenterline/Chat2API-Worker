@@ -1,5 +1,10 @@
 # Chat2API Worker
 
+![CI](https://github.com/laninenterline/Chat2API-Worker/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
+
+中文 | [English](README_EN.md)
+
+
 > 一个 **Cloudflare Worker**，把 **DeepSeek / GLM / MiniMax** 三家网页版模型统一成
 > **OpenAI ChatCompletions / Anthropic Messages / OpenAI Responses** 三种兼容 API。
 > 单文件部署、免费额度可跑，配合 KV 实现多账号池与负载均衡。
