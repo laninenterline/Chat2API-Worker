@@ -18,7 +18,8 @@ The GLM adapter reuses the Workers-verified implementation from the HelloGML fam
 
 ## Features
 
-- Three protocol front-ends: `/v1/chat/completions`, `/v1/messages`, `/v1/responses`
+- Four protocol front-ends: `/v1/chat/completions`, `/v1/messages`, `/v1/responses`, `/v1beta/models/*` (Gemini)
+- `/v1/models` returns an Anthropic-shaped list when `anthropic-version` is present
 - DeepSeek (wasm PoW), GLM (signed requests), MiniMax (device register + polling)
 - KV-backed multi-account pool with `round-robin` / `fill-first` / `failover` and 60s failure cooldown
 - Model mappings with `*` wildcards (`claude-*`, `gpt-*`, ...)
@@ -27,6 +28,17 @@ The GLM adapter reuses the Workers-verified implementation from the HelloGML fam
 - No Node.js runtime dependencies (wasm bundled with `CompiledWasm`)
 
 ## Deploy
+
+One-shot script:
+
+```bash
+export CLOUDFLARE_API_TOKEN=...      # Workers + KV edit
+export API_KEYS="sk-a,sk-b"          # optional
+export ADMIN_KEY="your-admin-key"    # optional
+./scripts/deploy.sh                  # creates/binds KV, puts secrets, deploys
+```
+
+Manual:
 
 ```bash
 npm install
@@ -73,7 +85,7 @@ client = OpenAI(base_url="https://chat2api-worker.xxx.workers.dev/v1", api_key="
 
 ```bash
 npm run typecheck
-npm test           # 11 unit tests (tools, converters, store, GLM adapter with mocked fetch)
+npm test           # 14 unit tests (tools, OpenAI/Anthropic/Responses/Gemini converters, store, GLM adapter)
 npm run build      # wrangler dry-run bundle check
 ```
 
@@ -81,7 +93,6 @@ npm run build      # wrangler dry-run bundle check
 
 - Tool calling is buffered: when `tools` are present the full answer is collected and parsed before emitting `tool_calls` (SSE stays valid, but not incremental).
 - Text only (no image / video / audio generation).
-- No Gemini endpoint (OpenAI / Anthropic / Responses cover DSH, Claude Code, Codex).
 - MiniMax needs credits; single-turn new conversation only.
 - Web endpoints may change at any time.
 

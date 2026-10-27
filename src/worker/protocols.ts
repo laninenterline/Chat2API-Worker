@@ -5,6 +5,12 @@ import { collectToBody } from './tools.ts'
 import { PROVIDER_CATALOG } from './providers/catalog.ts'
 import { unixTimestamp } from './helpers.ts'
 import {
+  GeminiStreamEncoder,
+  geminiRequestToOpenAI,
+  openAIToGeminiResponse,
+  type GeminiRequest,
+} from './convert/gemini.ts'
+import {
   anthropicError,
   anthropicRequestToOpenAI,
   AnthropicStreamEncoder,
@@ -239,20 +245,118 @@ export async function handleResponses(request: Request, store: Store): Promise<R
 // GET /v1/models
 // ---------------------------------------------------------------------------
 
-export function handleModels(store: Store): Response {
-  const modelIds = new Set<string>()
+export async function handleModels(request: Request, store: Store): Promise<Response> {
+  const cfg = await store.config()
+  const modelIds: string[] = []
+  const seen = new Set<string>()
+
   for (const provider of PROVIDER_CATALOG) {
-    for (const model of provider.models) modelIds.add(model)
+    for (const model of provider.models) {
+      if (!seen.has(model)) {
+        seen.add(model)
+        modelIds.push(model)
+      }
+    }
   }
+  for (const alias of Object.keys(cfg.modelMappings || {})) {
+    if (!seen.has(alias)) {
+      seen.add(alias)
+      modelIds.push(alias)
+    }
+  }
+
+  const created = unixTimestamp()
+
+  // Claude Code / DSH 会带 anthropic-version 头，此时返回 Anthropic 形状
+  if (request.headers.get('anthropic-version')) {
+    const data = modelIds.map((id) => ({
+      type: 'model',
+      id,
+      display_name: id,
+      created_at: new Date(created * 1000).toISOString(),
+    }))
+    return json({
+      data,
+      has_more: false,
+      first_id: data[0]?.id ?? null,
+      last_id: data[data.length - 1]?.id ?? null,
+    })
+  }
+
   return json({
     object: 'list',
-    data: [...modelIds].map((id) => ({
-      id,
-      object: 'model',
-      created: unixTimestamp(),
-      owned_by: 'chat2api-worker',
-    })),
+    data: modelIds.map((id) => ({ id, object: 'model', created, owned_by: 'chat2api-worker' })),
   })
+}
+
+// ---------------------------------------------------------------------------
+// Gemini: GET /v1beta/models, POST /v1beta/models/{model}:generateContent
+// ---------------------------------------------------------------------------
+
+export function handleGeminiModels(): Response {
+  return json({
+    models: PROVIDER_CATALOG.flatMap((provider) =>
+      provider.models.map((id) => ({
+        name: `models/${id}`,
+        baseModelId: id,
+        displayName: id,
+        description: `${provider.name} (${provider.id})`,
+        supportedGenerationMethods: ['generateContent', 'streamGenerateContent'],
+      })),
+    ),
+  })
+}
+
+export async function handleGemini(request: Request, url: URL, store: Store): Promise<Response> {
+  const match = url.pathname.match(/^\/v1beta\/models\/(.+):(generateContent|streamGenerateContent)$/)
+  if (!match) {
+    return json({ error: { code: 404, message: 'Not found', status: 'NOT_FOUND' } }, 404)
+  }
+
+  const model = decodeURIComponent(match[1])
+  let body: GeminiRequest
+  try {
+    body = (await request.json()) as GeminiRequest
+  } catch {
+    return json({ error: { code: 400, message: 'Invalid JSON body', status: 'INVALID_ARGUMENT' } }, 400)
+  }
+
+  const stream = match[2] === 'streamGenerateContent' || body.stream === true
+  const openaiRequest = geminiRequestToOpenAI(model, body, stream)
+
+  const outcome = await runCompletion(openaiRequest, store)
+  if (!outcome.ok) {
+    return json(
+      { error: { code: outcome.status || 502, message: outcome.error || 'Upstream request failed', status: 'UPSTREAM_ERROR' } },
+      outcome.status || 502,
+    )
+  }
+
+  if (!stream) {
+    const responseBody = await collectToBody(outcome.chunks!, model)
+    return json(openAIToGeminiResponse(responseBody))
+  }
+
+  const encoder = new TextEncoder()
+  const geminiEncoder = new GeminiStreamEncoder(model)
+  const streamBody = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        for await (const chunk of outcome.chunks!) {
+          const output = geminiEncoder.handleChunk(chunk)
+          if (output) controller.enqueue(encoder.encode(output))
+        }
+        const tail = geminiEncoder.finish()
+        if (tail) controller.enqueue(encoder.encode(tail))
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        controller.enqueue(encoder.encode(geminiEncoder.error(message)))
+      } finally {
+        controller.close()
+      }
+    },
+  })
+  return new Response(streamBody, { headers: sseHeaders() })
 }
 
 export function handleHealth(store: Store): Response {

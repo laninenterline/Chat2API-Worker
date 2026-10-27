@@ -18,7 +18,8 @@ GLM 适配器复用 [HelloGML](https://github.com/LLM-Red-Team/glm-free-api) 系
 
 ## 特性
 
-- **三协议入口**：`/v1/chat/completions`、`/v1/messages`（Claude Code / DSH）、`/v1/responses`（Codex）
+- **四协议入口**：`/v1/chat/completions`、`/v1/messages`（Claude Code / DSH）、`/v1/responses`（Codex）、`/v1beta/models/*`（Gemini）
+- **`/v1/models` 双形状**：带 `anthropic-version` 头时返回 Anthropic 形状（Claude Code / DSH 探测用）
 - **三供应商**：DeepSeek（wasm PoW）、GLM（sign 签名）、MiniMax（设备注册 + 轮询）
 - **多账号池**：KV 存账号，`round-robin` / `fill-first` / `failover`，失败账号 60s 冷却
 - **模型映射**：支持精确与 `*` 通配符，客户端可用 `claude-*` / `gpt-*` 等名字路由
@@ -55,6 +56,19 @@ assets/sha3_wasm_bg.*.wasm   # DeepSeek PoW wasm
 ```
 
 ## 部署
+
+### 一键脚本（推荐）
+
+```bash
+export CLOUDFLARE_API_TOKEN=...      # Workers + KV 编辑权限
+export API_KEYS="sk-a,sk-b"          # 可选
+export ADMIN_KEY="your-admin-key"    # 可选
+./scripts/deploy.sh                  # 自动建/绑定 KV、写 Secret、部署
+```
+
+其它变量：`CLOUDFLARE_ACCOUNT_ID`、`KV_NAME`（默认 `KV`）、`SIGN_SECRET`、`SKIP_SECRETS=1`、`SKIP_KV=1`。
+
+### 手动步骤
 
 ### 1. 准备
 
@@ -150,6 +164,17 @@ wire_api = "responses"
 env_key = "WORKER_API_KEY"
 ```
 
+### Gemini
+
+```bash
+curl "https://chat2api-worker.xxx.workers.dev/v1beta/models/GLM-5.3:generateContent?key=sk-your-key" \
+  -H "Content-Type: application/json" \
+  -d '{"contents":[{"role":"user","parts":[{"text":"你好"}]}]}'
+```
+
+流式：把 `:generateContent` 换成 `:streamGenerateContent`（SSE，`alt=sse` 客户端直接可用），
+模型列表 `GET /v1beta/models`。
+
 ### OpenAI SDK
 
 ```python
@@ -194,7 +219,7 @@ curl -X POST $BASE/admin/api/config -H "Authorization: Bearer $KEY" -H "Content-
 
 ```bash
 npm run typecheck    # tsc
-npm test             # 11 个单测：工具注入/解析、协议转换、账号池、GLM 适配器 mock
+npm test             # 14 个单测：工具注入/解析、OpenAI/Anthropic/Responses/Gemini 转换、账号池、GLM 适配器 mock
 npm run dev          # wrangler dev（本机 workerd）
 npm run build        # wrangler dry-run 打包检查
 ```
@@ -203,7 +228,7 @@ npm run build        # wrangler dry-run 打包检查
 
 - **工具调用是缓冲式的**：为了让网页版模型也能稳定产出 `tool_calls`，请求带 `tools` 时会先收完整段回答再解析，客户端看到的工具调用不是逐字流式（SSE 仍然合法）。
 - 只做文本对话：不含图片 / 视频 / 音频生成。
-- 不含 Gemini 协议入口（OpenAI / Anthropic / Responses 已覆盖 DSH、Claude Code、Codex）。
+
 - MiniMax 账号需要积分，且只实现「单轮新会话」流程。
 - 网页版接口随时可能变更，失效时需要跟着改。
 

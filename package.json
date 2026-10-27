@@ -1,6 +1,6 @@
 {
   "name": "chat2api-worker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "Cloudflare Worker：DeepSeek / GLM / MiniMax 网页版三合一，OpenAI / Anthropic / Responses 兼容 API",

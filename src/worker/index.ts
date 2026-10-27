@@ -5,6 +5,8 @@ import {
   handleAnthropicCountTokens,
   handleAnthropicMessages,
   handleChatCompletions,
+  handleGemini,
+  handleGeminiModels,
   handleHealth,
   handleModels,
   handleResponses,
@@ -17,7 +19,9 @@ async function isAuthorized(request: Request, store: Store, admin: boolean): Pro
 
   const header = request.headers.get('authorization') || ''
   const bearer = header.toLowerCase().startsWith('bearer ') ? header.slice(7).trim() : ''
-  const token = bearer || (request.headers.get('x-api-key') || '').trim()
+  const googleKey =
+    (request.headers.get('x-goog-api-key') || '').trim() || new URL(request.url).searchParams.get('key') || ''
+  const token = bearer || (request.headers.get('x-api-key') || '').trim() || googleKey
 
   if (keys.length === 0) return true // 未配置 Key 时放开（与 Node 版一致）
   return keys.includes(token)
@@ -39,7 +43,7 @@ export default {
       if (path === '/' || path === '/health') return handleHealth(store)
       if (path === '/ping') return new Response('pong', { headers: CORS_HEADERS })
 
-      if (path.startsWith('/v1/')) {
+      if (path.startsWith('/v1/') || path.startsWith('/v1beta/')) {
         if (!(await isAuthorized(request, store, false))) {
           return json({ error: { message: 'Invalid API key', type: 'authentication_error' } }, 401)
         }
@@ -51,7 +55,11 @@ export default {
 
       if (path === '/v1/chat/completions' && method === 'POST') return await handleChatCompletions(request, store)
       if (path === '/v1/responses' && method === 'POST') return await handleResponses(request, store)
-      if (path === '/v1/models' && method === 'GET') return handleModels(store)
+      if (path === '/v1/models' && method === 'GET') return await handleModels(request, store)
+      if (path === '/v1beta/models' && method === 'GET') return handleGeminiModels()
+      if (path.startsWith('/v1beta/models/') && method === 'POST' && path.includes(':')) {
+        return await handleGemini(request, url, store)
+      }
       if (path === '/v1/messages/count_tokens' && method === 'POST') return await handleAnthropicCountTokens(request)
       if ((path === '/v1/messages' || path === '/anthropic/v1/messages') && method === 'POST') {
         return await handleAnthropicMessages(request, store)
