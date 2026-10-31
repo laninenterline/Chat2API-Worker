@@ -1,0 +1,57 @@
+{
+  "host": "127.0.0.1",
+  "port": 8080,
+  "apiKeys": [
+    "sk-local-test"
+  ],
+  "adminKey": "change-me-admin",
+  "loadBalanceStrategy": "round-robin",
+  "mode": "single",
+  "retryCount": 1,
+  "requestTimeout": 60000,
+  "modelMappings": {
+    "deepseek-flash": "deepseek-v4.1-flash",
+    "deepseek-v4-flash": "deepseek-v4.1-flash",
+    "deepseek-v4-pro": "deepseek-v4.1-flash",
+    "claude-*": "deepseek-v4.1-flash",
+    "gpt-*": "deepseek-v4.1-flash",
+    "o3*": "deepseek-v4.1-flash",
+    "o4*": "deepseek-v4.1-flash"
+  },
+  "providers": {
+    "deepseek": {
+      "enabled": true
+    }
+  },
+  "contextManagement": {
+    "enabled": true,
+    "strategies": {
+      "slidingWindow": {
+        "enabled": true,
+        "maxMessages": 30
+      },
+      "tokenLimit": {
+        "enabled": true,
+        "maxTokens": 64000
+      },
+      "summary": {
+        "enabled": false,
+        "keepRecentMessages": 20
+      }
+    },
+    "executionOrder": [
+      "slidingWindow",
+      "tokenLimit",
+      "summary"
+    ]
+  },
+  "accounts": [
+    {
+      "provider": "deepseek",
+      "name": "deepseek-1",
+      "credentials": {
+        "token": ""
+      }
+    }
+  ]
+}

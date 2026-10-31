@@ -1,0 +1,6 @@
+node_modules
+config.json
+*.log
+logs/
+tests/*.log
+.server.pid
