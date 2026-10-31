@@ -109,7 +109,7 @@ claude
     models:
       - id: MiniMax-M3.1-Flash
         name: MiniMax M3.1-Flash (slim)
-        description: 经 MiniMax-Free-API 转发
+        description: 经 Chat2API 转发
         contextWindow: 131072
         maxTokens: 8192
         inputModalities: [text]
