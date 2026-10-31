@@ -2,7 +2,7 @@
 
 [DeepSeek](https://chat.deepseek.com) 网页版 → **OpenAI / Anthropic / Responses / Gemini** 兼容 API。
 
-这是 [ DeepSeek-Free-API ](https://github.com/laninenterline/Chat2API/tree/deepseek) 的 **单供应商 Cloudflare Worker 版**，
+这是 [ Chat2API 的 deepseek 分支 ](https://github.com/laninenterline/Chat2API/tree/deepseek) 的 **单供应商 Cloudflare Worker 版**，
 位于 **`cf-worker` 分支**；`main` 分支是 Node 版，两者功能对齐、互不影响。
 
 > **License: GPL-3.0**（继承上游）。仅供个人研究，网页版接口非官方、不稳定、有封号风险。
@@ -108,5 +108,5 @@ npm run build      # wrangler dry-run 打包检查
 ## License & credits
 
 - **GPL-3.0**，继承自 [xiaoY233/Chat2API](https://github.com/xiaoY233/Chat2API)。
-- 协议转换 / 工具解析 / 核心逻辑来自 [Chat2API-Worker](https://github.com/laninenterline/Chat2API)。
+- 协议转换 / 工具解析 / 核心逻辑来自 [Chat2API](https://github.com/laninenterline/Chat2API)。
 - 与 DeepSeek 官方无关，使用风险自负。
