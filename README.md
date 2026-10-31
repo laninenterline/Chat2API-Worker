@@ -112,7 +112,7 @@ claude
     models:
       - id: GLM-5.3-Flash
         name: GLM-5.3-Flash (slim)
-        description: 经 GLM-Free-API 转发
+        description: 经 Chat2API 转发
         contextWindow: 131072
         maxTokens: 8192
         inputModalities: [text]
@@ -120,7 +120,7 @@ claude
         toolUpdate: in-history
       - id: GLM-5.3
         name: GLM-5.3 (slim)
-        description: 经 GLM-Free-API 转发
+        description: 经 Chat2API 转发
         contextWindow: 131072
         maxTokens: 8192
         inputModalities: [text]
