@@ -2,7 +2,7 @@
 
 GLM web app → **OpenAI / Anthropic / Responses / Gemini** compatible API, running on a single Cloudflare Worker.
 
-This is the **single-provider Worker edition** of [GLM-Free-API](https://github.com/laninenterline/GLM-Free-API),
+This is the **single-provider Worker edition** of [GLM-Free-API](https://github.com/laninenterline/Chat2API/tree/glm),
 kept on the **`cf-worker` branch**; `main` holds the Node edition.
 
 > **License: GPL-3.0**. Unofficial endpoints — personal/research use only, ban risk.
@@ -50,5 +50,5 @@ npm run build
 
 ## License & credits
 
-GPL-3.0, derived from [Chat2API-Worker](https://github.com/laninenterline/Chat2API-Worker) /
+GPL-3.0, derived from [Chat2API-Worker](https://github.com/laninenterline/Chat2API) /
 [xiaoY233/Chat2API](https://github.com/xiaoY233/Chat2API).
