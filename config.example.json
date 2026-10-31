@@ -1,0 +1,56 @@
+{
+  "host": "127.0.0.1",
+  "port": 8080,
+  "apiKeys": [
+    "sk-local-test"
+  ],
+  "adminKey": "change-me-admin",
+  "loadBalanceStrategy": "round-robin",
+  "mode": "single",
+  "retryCount": 1,
+  "requestTimeout": 60000,
+  "modelMappings": {
+    "MiniMax-M2.7": "MiniMax-M3.1-Flash",
+    "claude-*": "MiniMax-M3.1-Flash",
+    "gpt-*": "MiniMax-M3.1-Flash",
+    "o3*": "MiniMax-M3.1-Flash",
+    "o4*": "MiniMax-M3.1-Flash"
+  },
+  "providers": {
+    "minimax": {
+      "enabled": true
+    }
+  },
+  "contextManagement": {
+    "enabled": true,
+    "strategies": {
+      "slidingWindow": {
+        "enabled": true,
+        "maxMessages": 30
+      },
+      "tokenLimit": {
+        "enabled": true,
+        "maxTokens": 64000
+      },
+      "summary": {
+        "enabled": false,
+        "keepRecentMessages": 20
+      }
+    },
+    "executionOrder": [
+      "slidingWindow",
+      "tokenLimit",
+      "summary"
+    ]
+  },
+  "accounts": [
+    {
+      "provider": "minimax",
+      "name": "minimax-1",
+      "credentials": {
+        "token": "",
+        "realUserID": ""
+      }
+    }
+  ]
+}

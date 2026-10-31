@@ -1,0 +1,35 @@
+{
+  "name": "minimax-free-api",
+  "version": "1.0.6",
+  "private": true,
+  "type": "module",
+  "description": "MiniMax Free API (slim)：minimax 网页版 → OpenAI / Anthropic / Responses 兼容 API（chat2api-slim 单供应商版）",
+  "license": "GPL-3.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "tsx src/main/index.ts",
+    "dev": "tsx watch src/main/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx scripts/test-protocols.ts"
+  },
+  "dependencies": {
+    "@koa/router": "^12.0.1",
+    "axios": "^1.7.7",
+    "eventsource-parser": "^3.0.6",
+    "form-data": "^4.0.0",
+    "koa": "^2.15.3",
+    "koa-bodyparser": "^4.4.1",
+    "mime-types": "^2.1.35",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/koa__router": "^12.0.4",
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}
