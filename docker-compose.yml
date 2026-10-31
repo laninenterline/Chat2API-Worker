@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        NODE_VERSION: "22"
+    image: glm-free-api:latest
+    container_name: glm-free-api
+    ports:
+      - "8080:8080"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8080"
+    volumes:
+      # 先把 config.example.json 复制成 config.json 并填好 token
+      # 需要可写：GLM 刷新 token 后会回写该文件
+      - ./config.json:/app/config.json
+    restart: unless-stopped

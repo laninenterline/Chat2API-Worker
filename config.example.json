@@ -1,0 +1,57 @@
+{
+  "host": "127.0.0.1",
+  "port": 8080,
+  "apiKeys": [
+    "sk-local-test"
+  ],
+  "adminKey": "change-me-admin",
+  "loadBalanceStrategy": "round-robin",
+  "mode": "single",
+  "retryCount": 1,
+  "requestTimeout": 60000,
+  "modelMappings": {
+    "GLM-5.1": "GLM-5.3",
+    "claude-3-5-haiku-*": "GLM-5.3-Flash",
+    "claude-*": "GLM-5.3",
+    "gpt-5-codex*": "GLM-5.3",
+    "gpt-*": "GLM-5.3",
+    "o3*": "GLM-5.3",
+    "o4*": "GLM-5.3"
+  },
+  "providers": {
+    "glm": {
+      "enabled": true
+    }
+  },
+  "contextManagement": {
+    "enabled": true,
+    "strategies": {
+      "slidingWindow": {
+        "enabled": true,
+        "maxMessages": 30
+      },
+      "tokenLimit": {
+        "enabled": true,
+        "maxTokens": 64000
+      },
+      "summary": {
+        "enabled": false,
+        "keepRecentMessages": 20
+      }
+    },
+    "executionOrder": [
+      "slidingWindow",
+      "tokenLimit",
+      "summary"
+    ]
+  },
+  "accounts": [
+    {
+      "provider": "glm",
+      "name": "glm-1",
+      "credentials": {
+        "refresh_token": ""
+      }
+    }
+  ]
+}
