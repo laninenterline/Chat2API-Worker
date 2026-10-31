@@ -1,0 +1,20 @@
+name = "deepseek-free-api"
+main = "src/worker/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# KV：存账号池 / 配置 / API Key
+[[kv_namespaces]]
+binding = "KV"
+id = "<your-kv-namespace-id>"
+
+# 把 wasm 作为编译模块打进 Worker（DeepSeek PoW 需要）
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+fallthrough = true
+
+[vars]
+# 也可以放到 Secret 里：wrangler secret put ADMIN_KEY / API_KEYS
+# ADMIN_KEY = "change-me"
+# API_KEYS = "sk-local-test,sk-team"
