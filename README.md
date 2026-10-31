@@ -111,7 +111,7 @@ claude
     models:
       - id: deepseek-v4.1-flash
         name: DeepSeek V4.1-Flash (slim)
-        description: 经 DeepSeek-Free-API 转发
+        description: 经 Chat2API 转发
         contextWindow: 131072
         maxTokens: 8192
         inputModalities: [text]
