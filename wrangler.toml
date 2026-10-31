@@ -1,0 +1,15 @@
+name = "minimax-free-api"
+main = "src/worker/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# KV：存账号池 / 配置 / API Key
+[[kv_namespaces]]
+binding = "KV"
+id = "<your-kv-namespace-id>"
+
+
+[vars]
+# 也可以放到 Secret 里：wrangler secret put ADMIN_KEY / API_KEYS
+# ADMIN_KEY = "change-me"
+# API_KEYS = "sk-local-test,sk-team"
