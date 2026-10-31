@@ -9,9 +9,9 @@
 > **OpenAI ChatCompletions / Anthropic Messages / OpenAI Responses** 三种兼容 API。
 > 单文件部署、免费额度可跑，配合 KV 实现多账号池与负载均衡。
 
-从前作的 Node 版单供应商仓库（[DeepSeek-Free-API](https://github.com/laninenterline/DeepSeek-Free-API) /
-[GLM-Free-API](https://github.com/laninenterline/GLM-Free-API) /
-[MiniMax-Free-API](https://github.com/laninenterline/MiniMax-Free-API)）抽取合并而来，
+由前作的单供应商版本（已合并到本仓库的 [`deepseek`](https://github.com/laninenterline/Chat2API/tree/deepseek) /
+[`glm`](https://github.com/laninenterline/Chat2API/tree/glm) /
+[`minimax`](https://github.com/laninenterline/Chat2API/tree/minimax) 分支）抽取合并而来，
 GLM 适配器复用 [HelloGML](https://github.com/LLM-Red-Team/glm-free-api) 系在 Workers 上验证过的实现。
 
 > **License: GPL-3.0**（继承上游）。仅供个人研究，网页版接口非官方、不稳定、有封号风险。

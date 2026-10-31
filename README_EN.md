@@ -8,10 +8,10 @@
 A single **Cloudflare Worker** exposing **DeepSeek / GLM / MiniMax** web models through
 **OpenAI ChatCompletions**, **Anthropic Messages** and **OpenAI Responses** compatible APIs.
 
-Extracted and merged from the Node slim repos
-([DeepSeek-Free-API](https://github.com/laninenterline/DeepSeek-Free-API),
-[GLM-Free-API](https://github.com/laninenterline/GLM-Free-API),
-[MiniMax-Free-API](https://github.com/laninenterline/MiniMax-Free-API)).
+Extracted and merged from the single-provider editions
+(now the [`deepseek`](https://github.com/laninenterline/Chat2API/tree/deepseek),
+[`glm`](https://github.com/laninenterline/Chat2API/tree/glm) and
+[`minimax`](https://github.com/laninenterline/Chat2API/tree/minimax) branches).
 The GLM adapter reuses the Workers-verified implementation from the HelloGML family.
 
 > **License: GPL-3.0** (inherited). Unofficial web endpoints — unstable, personal/research use only, ban risk.
