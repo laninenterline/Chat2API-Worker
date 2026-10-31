@@ -1,6 +1,6 @@
 # Chat2API Worker
 
-![CI](https://github.com/laninenterline/Chat2API-Worker/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
+![CI](https://github.com/laninenterline/Chat2API/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
 
 中文 | [English](README_EN.md)
 
@@ -15,6 +15,21 @@ Extracted and merged from the Node slim repos
 The GLM adapter reuses the Workers-verified implementation from the HelloGML family.
 
 > **License: GPL-3.0** (inherited). Unofficial web endpoints — unstable, personal/research use only, ban risk.
+
+## Branches
+
+The four related projects are merged into this repository, one per branch
+(the original standalone repositories are kept and can be archived later):
+
+| Branch | Content |
+|---|---|
+| [`main`](https://github.com/laninenterline/Chat2API) | Three-in-one Cloudflare Worker (default) |
+| [`deepseek`](https://github.com/laninenterline/Chat2API/tree/deepseek) | DeepSeek single-provider Node edition |
+| [`glm`](https://github.com/laninenterline/Chat2API/tree/glm) | GLM single-provider Node edition |
+| [`minimax`](https://github.com/laninenterline/Chat2API/tree/minimax) | MiniMax single-provider Node edition |
+| [`deepseek-worker`](https://github.com/laninenterline/Chat2API/tree/deepseek-worker) | DeepSeek single-provider Worker edition |
+| [`glm-worker`](https://github.com/laninenterline/Chat2API/tree/glm-worker) | GLM single-provider Worker edition |
+| [`minimax-worker`](https://github.com/laninenterline/Chat2API/tree/minimax-worker) | MiniMax single-provider Worker edition |
 
 ## Features
 

@@ -1,6 +1,6 @@
 # Chat2API Worker
 
-![CI](https://github.com/laninenterline/Chat2API-Worker/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
+![CI](https://github.com/laninenterline/Chat2API/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)
 
 中文 | [English](README_EN.md)
 
@@ -15,6 +15,25 @@
 GLM 适配器复用 [HelloGML](https://github.com/LLM-Red-Team/glm-free-api) 系在 Workers 上验证过的实现。
 
 > **License: GPL-3.0**（继承上游）。仅供个人研究，网页版接口非官方、不稳定、有封号风险。
+
+## 分支一览
+
+四个相关项目已合并进本仓库，用分支区分（原仓库仍然保留，可随时归档/删除）：
+
+| 分支 | 内容 |
+|---|---|
+| [`main`](https://github.com/laninenterline/Chat2API) | 三合一 Cloudflare Worker（本仓库默认分支） |
+| [`deepseek`](https://github.com/laninenterline/Chat2API/tree/deepseek) | DeepSeek 单供应商 Node 版（原 DeepSeek-Free-API） |
+| [`glm`](https://github.com/laninenterline/Chat2API/tree/glm) | GLM 单供应商 Node 版（原 GLM-Free-API） |
+| [`minimax`](https://github.com/laninenterline/Chat2API/tree/minimax) | MiniMax 单供应商 Node 版（原 MiniMax-Free-API） |
+| [`deepseek-worker`](https://github.com/laninenterline/Chat2API/tree/deepseek-worker) | DeepSeek 单供应商 Cloudflare Worker 版 |
+| [`glm-worker`](https://github.com/laninenterline/Chat2API/tree/glm-worker) | GLM 单供应商 Cloudflare Worker 版 |
+| [`minimax-worker`](https://github.com/laninenterline/Chat2API/tree/minimax-worker) | MiniMax 单供应商 Cloudflare Worker 版 |
+
+```bash
+git clone -b deepseek https://github.com/laninenterline/Chat2API.git   # Node 版
+git clone -b glm-worker https://github.com/laninenterline/Chat2API.git # Worker 版
+```
 
 ## 特性
 
