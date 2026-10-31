@@ -108,5 +108,5 @@ npm run build      # wrangler dry-run 打包检查
 ## License & credits
 
 - **GPL-3.0**，继承自 [xiaoY233/Chat2API](https://github.com/xiaoY233/Chat2API)。
-- 协议转换 / 工具解析 / 核心逻辑来自 [Chat2API-Worker](https://github.com/laninenterline/Chat2API)。
+- 协议转换 / 工具解析 / 核心逻辑来自 [Chat2API](https://github.com/laninenterline/Chat2API)。
 - 与 MiniMax 官方无关，使用风险自负。
